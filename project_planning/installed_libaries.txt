@@ -1,0 +1,8 @@
+
+python -m pip install python-dotenv                                         
+pip install langchain-core
+python -m pip install -U langchain-ollama                                 
+pip install -U langchain
+python -m pip install pyaudio
+pip install faster-whisper
+pip install keyboard

@@ -44,3 +44,8 @@ def load_history():
             history.append(AIMessage(content=content))
 
     return history
+
+
+def reset_history():
+    with sqlite3.connect(DB_PATH) as connection:
+        connection.execute("DELETE FROM messages")
