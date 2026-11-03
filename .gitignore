@@ -8,7 +8,6 @@ __pycache__/
 *.pyc
 
 # Model files and caches
-models/
 .cache/
 huggingface/
 *.bin

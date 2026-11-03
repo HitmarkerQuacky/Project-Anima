@@ -1,0 +1,17 @@
+stable diffusion logging:
+[source]
+https://github.com/AUTOMATIC1111/stable-diffusion-webui
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-AMD-GPUs
+
+- need to install directml version since im using a AMD GPU
+
+[installation]
+- download python 3.10.6 (add to PATH) and git
+- create folder for download
+- clone repository in folder in cmd: git clone https://github.com/lshqqytiger/stable-diffusion-webui-directml && cd stable-diffusion-webui-directml && git submodule init && git submodule update
+- edit webui-user.bat file and add command tags: set COMMANDLINE_ARGS= --use-directml --skip-torch-cuda-test --disable-model-loading-ram-optimization --opt-sub-quad-attention --medvram --disable-nan-check
+
+- had to delete venv folder after making edits to webui-user.bat file (i.e. redownload the stuff)
+
+[running program]
+- copy IP address after running webui-user.bat file

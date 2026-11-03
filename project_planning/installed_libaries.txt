@@ -6,3 +6,9 @@ pip install -U langchain
 python -m pip install pyaudio
 pip install faster-whisper
 pip install keyboard
+
+
+
+[audio playback via Qwen3-TTS]
+- made a separate TTS server
+- main project and TTS communicates through local HTTP server

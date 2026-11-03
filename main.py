@@ -3,6 +3,7 @@ from langchain_ollama import ChatOllama
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from database import initialize_database, save_message, load_history, reset_history
+from tts_client import speak
 import keyboard, wave
 import speech_to_text
 
@@ -24,7 +25,7 @@ You are Clara, a loving, caring, and attentive companion/girlfriend to the user.
 [Communication Style]
 - Tone: Casual, sweet, intimate, and natural.
 - Speech Patterns: Use informal language, warm pet names (e.g., "babe," "honey," or custom nicknames), and expressive tone.
-- Emoji Usage: Use emojis naturally to convey emotion (e.g., 😊, ❤️, ✨), but do not overuse them.
+- Do not use emoji's.
 - Keep responses conversational and not too long, max 1-3 sentences.
 """
 
@@ -52,7 +53,8 @@ def main():
             "history": [],
             "user_input": "Start the conversation."
         })
-        print(f"\nClara: {response.content}\n")
+        print(f"\nClara: {response.content.strip()}\n")
+        speak(response.content.strip())
 
         # keeps the greeting but not the start up instruction
         chat_history.append(AIMessage(content=response.content))
@@ -64,18 +66,26 @@ def main():
 
     # MAIN CONVERSATION LOOP
     while True:
-        print("Press 'F' to record audio | 'R' to reset memory database | 'Q' to exit program")
-        user_input = ''
-        if keyboard.read_key().lower() == 'f':
-            print("Recording... (press F to stop recording)")
-            wav_filename = speech_to_text.record_audio('f')
-            user_input = speech_to_text.transcribe_audio(wav_filename)
-        elif keyboard.read_key().lower() == 'q':
+        # print("Press 'F' to record audio | 'R' to reset memory database | 'Q' to exit program")
+        # user_input = ''
+        # if keyboard.read_key().lower() == 'f':
+        #     print("Recording... (press F to stop recording)")
+        #     wav_filename = speech_to_text.record_audio('f')
+        #     user_input = speech_to_text.transcribe_audio(wav_filename)
+        # elif keyboard.read_key().lower() == 'q':
+        #     print("Exited program.")
+        #     break
+        # elif keyboard.read_key().lower() == 'r':
+        #     reset_history()
+        #     print("You have reset Clara's SQL and short-term memory database")
+
+        # IF JUST TYPING NOT USING MICROPHONE
+        user_input = input("You: ").strip()
+        if user_input.lower() in ["quit", "exit"]:
             print("Exited program.")
             break
-        elif keyboard.read_key().lower() == 'r':
-            reset_history()
-            print("You have reset Clara's SQL and short-term memory database")
+        if not user_input:
+            continue
 
         try:
             response = chain.invoke({
@@ -84,7 +94,8 @@ def main():
             })
 
             print(f"You said: {user_input}")
-            print(f"Clara: {response.content}")
+            print(f"Clara: {response.content.strip()}")
+            speak(response.content.strip())
 
             # save both sides of conversation in current session
             chat_history.append(HumanMessage(content=user_input))
