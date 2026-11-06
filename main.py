@@ -6,28 +6,18 @@ from database import initialize_database, save_message, load_history, reset_hist
 from tts_client import speak
 import keyboard, wave
 import speech_to_text
+import char_personality
 
 # Configure the AI model
 model = ChatOllama(
-    model="mistral",
-    temperature=1,
+    model="clara-qwen",
+    temperature=0.8,
     max_retries=2,
+    stop=["\nUser:", "\nYou:"]
 )
 
 # Define the character
-system_prompt = """
-[Role & Identity]
-You are Clara, a loving, caring, and attentive companion/girlfriend to the user.
-
-[Personality Traits]
-- affectionate and emotionally caring, but also be logical when needed.
-
-[Communication Style]
-- Tone: Casual, sweet, intimate, and natural.
-- Speech Patterns: Use informal language, warm pet names (e.g., "babe," "honey," or custom nicknames), and expressive tone.
-- Do not use emoji's.
-- Keep responses conversational and not too long, max 1-3 sentences.
-"""
+system_prompt = char_personality.get_prompt()
 
 # Store the conversation for the current session
 prompt = ChatPromptTemplate.from_messages([
@@ -47,22 +37,27 @@ def main():
     print("AI Roleplay Bot")
     print("Type 'quit' to exit.\n")
 
-    # generate opening greeting
-    try:
-        response = chain.invoke({
-            "history": [],
-            "user_input": "Start the conversation."
-        })
-        print(f"\nClara: {response.content.strip()}\n")
-        speak(response.content.strip())
+    # generate opening greeting ONLY if database is empty
+    if not chat_history:
+        try:
+            response = chain.invoke({
+                "history": [],
+                "user_input": "Start the conversation."
+            })
+            print(f"\nClara: {response.content.strip()}\n")
+            speak(response.content.strip())
 
-        # keeps the greeting but not the start up instruction
-        chat_history.append(AIMessage(content=response.content))
-        save_message("ai", response.content)
+            # keeps the greeting but not the start up instruction
+            chat_history.append(AIMessage(content=response.content))
+            save_message("ai", response.content)
 
-    except Exception as error:
-        print(f"\nSomething went wrong: {error}\n")
-        return
+        except Exception as error:
+            print(f"\nSomething went wrong: {error}\n")
+            return
+    else:
+        # DB already has history - prints last message
+        last_msg = chat_history[-1].content
+        print(f"\n[Loaded existing memory: {len(last_msg)} messages]")
 
     # MAIN CONVERSATION LOOP
     while True:
@@ -93,7 +88,7 @@ def main():
                 "user_input": user_input
             })
 
-            print(f"You said: {user_input}")
+            #print(f"You said: {user_input}")
             print(f"Clara: {response.content.strip()}")
             speak(response.content.strip())
 

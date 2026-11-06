@@ -26,14 +26,17 @@ def save_message(role, content):
         )
 
 
-def load_history():
+def load_history(limit=20):
     """Load saved messages as LangChain message objects."""
     with sqlite3.connect(DB_PATH) as connection:
         rows = connection.execute("""
-            SELECT role, content
-            FROM messages
-            ORDER BY id
-        """).fetchall()
+            SELECT role, content FROM (
+                SELECT id, role, content
+                FROM messages
+                ORDER BY id DESC
+                LIMIT ?
+            ) ORDER BY id ASC
+        """, (limit,)).fetchall()
 
     history = []
 
