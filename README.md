@@ -1,6 +1,13 @@
 [README_Project_Anima.md](https://github.com/user-attachments/files/34671718/README_Project_Anima.md)
 # Project Anima --- Clara
 
+<div align="center">
+  <img
+    src="model/stickers/Clara_Happy.png"
+    alt="Clara --- Happy chibi art"
+    style="display: block; margin-left: auto; margin-right: auto; width: 25%;"/>
+</div>
+
 > **Project Anima** is an experimental desktop AI companion built around
 > **Clara**, a customizable 3D character. It combines a local Python
 > conversational-AI backend with a Unity application for avatar
@@ -15,7 +22,7 @@
 ## Character preview
 
 <div align="center">
-  <img src="model/Clara.png" alt="Clara --- Project Anima character concept" />
+  <img src="model/Clara.png" alt="Clara --- Project Anima character concept"/>
 </div>
 
 *Character concept artwork generated during development. The
@@ -46,6 +53,13 @@ collapsed.
 ------------------------------------------------------------------------
 
 ## Architecture overview
+
+<div align="center">
+  <img
+    src="model/stickers/Clara_Smug.png"
+    alt="Clara --- Smug chibi art"
+    style="display: block; margin-left: auto; margin-right: auto; width: 25%;"/>
+</div>
 
 The project is split into two main parts:
 
@@ -83,11 +97,19 @@ prototype has also been used through a command-line workflow.
 
 ## Technology and tools
 
+<div align="center">
+  <img
+    src="model/stickers/Clara_Shocked.png"
+    alt="Clara --- Shocked chibi art"
+    style="display: block; margin-left: auto; margin-right: auto; width: 25%;"/>
+</div>
+
 The following list distinguishes tools already used from components that
 are planned or experimental. Versions are included only where known.
 
 ### Python backend
 
+``` text
   -----------------------------------------------------------------------
   Tool / technology       Purpose                 Status
   ----------------------- ----------------------- -----------------------
@@ -126,12 +148,8 @@ are planned or experimental. Versions are included only where known.
   **FastAPI**             Intended local HTTP API Planned
                           between Python and      
                           Unity.                  
-
-  **Mistral AI**          Earlier hosted-model    Previous experiment
-                          experiment before       
-                          moving toward local     
-                          inference.              
   -----------------------------------------------------------------------
+```
 
 Python modules have included:
 
@@ -147,6 +165,7 @@ for Unity integration.
 
 ### Unity frontend
 
+``` text
   -----------------------------------------------------------------------
   Tool / technology       Purpose                 Status
   ----------------------- ----------------------- -----------------------
@@ -180,9 +199,11 @@ for Unity integration.
                           events, and             
                           pointer/drag handling.  
   -----------------------------------------------------------------------
+```
 
 ### Character art and visual development
 
+``` text
   -----------------------------------------------------------------------
   Tool / technology       Purpose                 Status
   ----------------------- ----------------------- -----------------------
@@ -196,12 +217,14 @@ for Unity integration.
                           Clara's character-art   
                           exploration.            
   -----------------------------------------------------------------------
+```
 
 The generated character artwork is a visual reference for Clara. The
 in-application character is a separate 3D VRM avatar.
 
 ### Development tools
 
+``` text
   -----------------------------------------------------------------------
   Tool                                Purpose
   ----------------------------------- -----------------------------------
@@ -217,10 +240,18 @@ in-application character is a separate 3D VRM avatar.
 
   **Windows 11**                      Primary development environment.
   -----------------------------------------------------------------------
+```
 
 ------------------------------------------------------------------------
 
 ## Current Unity application roadmap
+
+<div align="center">
+  <img
+    src="model/stickers/Clara_Crying.png"
+    alt="Clara --- Crying chibi art"
+    style="display: block; margin-left: auto; margin-right: auto; width: 25%;"/>
+</div>
 
 The Unity application is being developed as a desktop-style companion
 interface. The initial target is a functional project running in the
@@ -324,6 +355,13 @@ Unity Editor; a standalone executable or installer can come later.
 ------------------------------------------------------------------------
 
 ## Planned Python ↔ Unity communication
+
+<div align="center">
+  <img
+    src="model/stickers/Clara_Sleepy.png"
+    alt="Clara --- Sleepy chibi art"
+    style="display: block; margin-left: auto; margin-right: auto; width: 25%;"/>
+</div>
 
 The intended integration uses a local API. This is a design direction,
 not a claim that the API is already implemented.
