@@ -1,0 +1,69 @@
+UI foundation
+- Canvas and UI hierarchy.
+- Sidebar with working buttons.
+- Floating, draggable chat panel.
+- Scrollable conversation history.
+- Collapsible panels.
+
+
+
+Avatar presentation
+- Render Texture setup.
+- Independent background.
+- Camera pivot and zoom.
+- Face, upper body, lower body, and full-body presets.
+
+
+
+Background selection
+- Background folder.
+- Image gallery.
+- Thumbnail previews.
+- Selected background persistence.
+
+
+
+Python integration
+- FastAPI backend.
+- Unity-to-Python HTTP communication.
+- Display Clara's responses in chat.
+- Connect existing conversation history.
+
+
+
+Voice interaction
+- Microphone recording.
+- Push-to-talk.
+- faster-whisper integration.
+- Kokoro audio playback.
+
+
+
+Character animation
+- Idle animation.
+- Lip synchronization.
+- Facial expressions.
+- Emotion metadata from LLM.
+
+
+
+Additional features
+- Active listening.
+- Facecam mode.
+- Options page.
+- Clothing selection.
+
+
+
+
+colour palette (sidebar):
+sidebar background = #11820
+button background = #252E38
+hover background = #354352
+icon colour = #E5EAF0
+
+
+
+
+
+
