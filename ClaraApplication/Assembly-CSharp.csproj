@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ChatWindowDrag.cs" />
     <Compile Include="Assets\Scripts\ChatWindowController.cs" />
+    <Compile Include="Assets\Scripts\AvatarCameraController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
