@@ -280,17 +280,17 @@ Unity Editor; a standalone executable or installer can come later.
 
 ### 2. Avatar presentation
 
--   [ ] Set up a dedicated avatar camera and Render Texture.
--   [ ] Display the Render Texture through a Unity UI RawImage.
--   [ ] Separate the background from the avatar camera so camera
+-   [x] Set up a dedicated avatar camera and Render Texture.
+-   [x] Display the Render Texture through a Unity UI RawImage.
+-   [x] Separate the background from the avatar camera so camera
     movement does not move the background.
--   [ ] Create a camera pivot/target around Clara.
--   [ ] Implement camera rotation and zoom controls.
--   [ ] Add camera framing presets:
-    -   [ ] Face
-    -   [ ] Upper body
-    -   [ ] Lower body
-    -   [ ] Full body
+-   [x] Create a camera pivot/target around Clara.
+-   [x] Implement camera rotation and zoom controls.
+-   [x] Add camera framing presets:
+    -   [x] Face
+    -   [x] Upper body
+    -   [x] Lower body
+    -   [x] Full body
 
 ### 3. Listening mode
 

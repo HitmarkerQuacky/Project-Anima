@@ -301,7 +301,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 40607649}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2067574373}
+        m_TargetAssemblyTypeName: UIWindowController, Assembly-CSharp
+        m_MethodName: ToggleCamera
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &40607649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5366,7 +5378,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2067574373}
-        m_TargetAssemblyTypeName: ChatWindowController, Assembly-CSharp
+        m_TargetAssemblyTypeName: UIWindowController, Assembly-CSharp
         m_MethodName: ToggleChat
         m_Mode: 1
         m_Arguments:
@@ -5531,10 +5543,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2067574368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ed5cc9ae4fed40943337da0509b92, type: 3}
+  m_Script: {fileID: 11500000, guid: c28abc931c26b344ab2b639e018126f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   chatWindow: {fileID: 328316665}
+  cameraPresetsWindow: {fileID: 489473607}
+  cameraController: {fileID: 443068155}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
