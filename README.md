@@ -271,11 +271,11 @@ Unity Editor; a standalone executable or installer can come later.
 -   [x] Make the chat window draggable.
 -   [x] Make the chat window collapsible and reopenable through the
     sidebar.
--   [ ] Connect the chat UI to the Python conversation backend.
--   [ ] Dynamically create message bubbles from actual conversation
+-   [x] Connect the chat UI to the Python conversation backend.
+-   [x] Dynamically create message bubbles from actual conversation
     messages.
--   [ ] Automatically scroll to the latest message.
--   [ ] Preserve the chat window's last position when hidden and
+-   [x] Automatically scroll to the latest message.
+-   [x] Preserve the chat window's last position when hidden and
     reopened.
 
 ### 2. Avatar presentation
