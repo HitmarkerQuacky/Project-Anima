@@ -22,6 +22,9 @@ public class UnityChatController : MonoBehaviour
     [SerializeField] private GameObject userMessagePrefab;
     [SerializeField] private GameObject claraMessagePrefab;
 
+    [Header("Clara Audio")]
+    [SerializeField] private AudioSource claraAudioSource;
+
     private bool isWaitingForResponse;
 
     [Serializable]
@@ -141,7 +144,13 @@ public class UnityChatController : MonoBehaviour
                         request.downloadHandler.text
                     );
 
+                // Display Clara's response.
                 CreateMessage(response.response, false);
+
+                // Generate Kokoro speech and play it through Unity.
+                yield return StartCoroutine(
+                    PlayClaraSpeech(response.response)
+                    );
             }
             else
             {
@@ -248,5 +257,64 @@ public class UnityChatController : MonoBehaviour
 
         conversationScroll.verticalNormalizedPosition = 0f;
     }
+
+    private IEnumerator PlayClaraSpeech(string text)
+    {
+        ChatRequest data = new ChatRequest
+        {
+            message = text
+        };
+
+        string json = JsonUtility.ToJson(data);
+
+        string url = apiUrl + "/tts";
+
+        using (UnityWebRequest request =
+            new UnityWebRequest(url, "POST"))
+        {
+            byte[] body = Encoding.UTF8.GetBytes(json);
+
+            request.uploadHandler =
+                new UploadHandlerRaw(body);
+
+            request.downloadHandler =
+                new DownloadHandlerAudioClip(
+                    url,
+                    AudioType.WAV
+                );
+
+            request.SetRequestHeader(
+                "Content-Type",
+                "application/json"
+            );
+
+            request.timeout = 300;
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogWarning(
+                    "Clara TTS failed: " + request.error
+                );
+
+                yield break;
+            }
+
+            // Receive audio over HTTP and converts into AudioClip WAV file
+            AudioClip clip =
+                DownloadHandlerAudioClip.GetContent(request);
+
+            claraAudioSource.Stop();
+
+            AudioClip previousClip = claraAudioSource.clip;
+            claraAudioSource.clip = clip;
+            claraAudioSource.Play();
+
+            if (previousClip != null)
+                Destroy(previousClip);
+        }
+    }
+
 
 }

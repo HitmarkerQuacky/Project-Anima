@@ -63,7 +63,26 @@ hover background = #354352
 icon colour = #E5EAF0
 
 
+-------------------------------------
+RESETTING CLARA DATABASE
+-------------------------------------
+run: python -c "from database import initialize_database, reset_history; initialize_database(); reset_history(); print('Conversation history cleared.')"
 
+-------------------------------------
+LOCAL HTTP HOST ACTIVATION GUIDE
+-------------------------------------
 
+(1) API file
+- Make sure Ollama LLM is installed
+- Go to local project folder
+- Activate .venv if used
+    - .venv\Scripts\Activate
+- command: python -m univorn api:app --host 127.0.0.1 --port 8001
 
+(2) TTS client (KokoroTTS)
+- Go to local installed TTS model.
+    - cd C:\AI\KokoroTTS
+- Activate .venv if is used.
+    - .venv\Scripts\Activate
+- command: python -m univorn tts_server:app --host 127.0.0.1 --port 8000
 

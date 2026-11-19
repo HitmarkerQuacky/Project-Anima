@@ -1,9 +1,13 @@
 
 from threading import Lock
 
+import requests
+from fastapi import HTTPException, Response
+from tts_client import generate_wav
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_core.messages import HumanMessage, AIMessage
+import emoji
 
 import main as clara
 from database import load_history
@@ -57,7 +61,10 @@ def chat(request: ChatRequest):
             "user_input": user_input
         })
 
-        response_text = result.content.strip()
+        response_text = emoji.replace_emoji(
+            result.content,
+            replace=""
+        ).strip()
 
         # Save both messages to SQLite.
         clara.save_message("human", user_input)
@@ -72,3 +79,28 @@ def chat(request: ChatRequest):
         )
 
     return ChatResponse(response=response_text)
+
+
+@app.post("/tts")
+def text_to_speech(request: ChatRequest):
+    text = request.message.strip()
+
+    if not text:
+        raise HTTPException(
+            status_code=400,
+            detail="No text provided"
+        )
+
+    try:
+        wav_data = generate_wav(text)
+
+        return Response(
+            content=wav_data,
+            media_type="audio/wav"
+        )
+
+    except requests.RequestException as error:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Kokoro TTS failed: {error}"
+        )
