@@ -6,13 +6,109 @@ from fastapi import HTTPException, Response
 from tts_client import generate_wav
 from fastapi import FastAPI
 from pydantic import BaseModel
-from langchain_core.messages import HumanMessage, AIMessage
-import emoji
+from langchain_ollama import ChatOllama
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+import emoji, json, math
 
 import main as clara
 from database import load_history
 
 app = FastAPI(title="Clara Conversation API")
+
+VALID_EMOTIONS = {
+    "neutral",
+    "happy",
+    "sad",
+    "angry",
+    "relaxed",
+    "surprised"
+}
+
+emotion_model = ChatOllama(
+    model="clara-qwen",
+    temperature=0,
+    format="json"
+)
+
+EMOTION_PROMPT = """
+You interpret Clara's intended facial expression.
+
+Consider:
+- The user's message.
+- Relevant recent conversation context.
+- Clara's actual generated response.
+- The tone and emotional intent of Clara's response.
+
+Choose exactly one emotion:
+neutral, happy, sad, angry, relaxed, surprised.
+
+Guidelines:
+- Neutral: no clear emotional expression.
+- Happy: happiness, amusement, playful teasing.
+- Sad: sadness, sympathy, disappointment.
+- Angry: frustration, irritation, disapproval.
+- Relaxed: calmness, warmth, reassurance.
+- Surprised: shock, curiosity, unexpected news.
+
+Choose intensity between 0.0 and 1.0.
+Prefer subtle expressions (0.3 to 0.6).
+Use higher values only when emotionally appropriate.
+Do not assume Clara feels the same emotion as the user.
+Use neutral when uncertain.
+
+Return ONLY a JSON object with these fields:
+{
+    "emotion": "neutral",
+    "intensity": 0.0
+}
+"""
+
+def determine_emotion(user_input, response_text):
+    """Interpret Clara's expression using dialogue and context."""
+
+    recent_context = [
+        {
+            "role": "user" if isinstance(msg, HumanMessage)
+                    else "clara",
+            "content": str(msg.content)
+        }
+        for msg in clara.chat_history[-4:]
+    ]
+
+    context = {
+        "recent_conversation": recent_context,
+        "user_message": user_input,
+        "clara_response": response_text
+    }
+
+    try:
+        result = emotion_model.invoke([
+            SystemMessage(content=EMOTION_PROMPT),
+            HumanMessage(content=json.dumps(context))
+        ])
+
+        data = json.loads(result.content)
+
+        emotion = str(
+            data.get("emotion", "neutral")
+        ).lower().strip()
+
+        if emotion not in VALID_EMOTIONS:
+            emotion = "neutral"
+
+        intensity = float(data.get("intensity", 0.0))
+
+        if not math.isfinite(intensity):
+            intensity = 0.0
+
+        intensity = max(0.0, min(1.0, intensity))
+
+        return emotion, intensity
+
+    except Exception as error:
+        print(f"Emotion interpretation failed: {error}")
+        return "neutral", 0.0
+
 
 # Prevent two requests from modifying conversation memory at once.
 conversation_lock = Lock()
@@ -24,6 +120,8 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     response: str
+    emotion: str = "neutral"
+    intensity: float = 0.0
 
 
 @app.get("/health")
@@ -52,7 +150,11 @@ def chat(request: ChatRequest):
     user_input = request.message.strip()
 
     if not user_input:
-        return ChatResponse(response="")
+        return ChatResponse(
+            response="",
+            emotion="neutral",
+            intensity=0.0
+            )
 
     with conversation_lock:
         # Reuse the existing LangChain prompt and Ollama model.
@@ -66,6 +168,11 @@ def chat(request: ChatRequest):
             replace=""
         ).strip()
 
+        emotion, intensity = determine_emotion(
+            user_input,
+            response_text
+        )
+
         # Save both messages to SQLite.
         clara.save_message("human", user_input)
         clara.save_message("ai", response_text)
@@ -78,7 +185,11 @@ def chat(request: ChatRequest):
             AIMessage(content=response_text)
         )
 
-    return ChatResponse(response=response_text)
+    return ChatResponse(
+        response=response_text,
+        emotion=emotion,
+        intensity=intensity
+        )
 
 
 @app.post("/tts")

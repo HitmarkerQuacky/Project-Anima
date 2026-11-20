@@ -25,6 +25,9 @@ public class UnityChatController : MonoBehaviour
     [Header("Clara Audio")]
     [SerializeField] private AudioSource claraAudioSource;
 
+    [Header("Clara Expressions")]
+    [SerializeField] private ClaraExpressionController claraExpressionController;
+
     private bool isWaitingForResponse;
 
     [Serializable]
@@ -37,6 +40,8 @@ public class UnityChatController : MonoBehaviour
     private class ChatResponse
     {
         public string response;
+        public string emotion;
+        public float intensity;
     }
 
     [Serializable]
@@ -144,10 +149,19 @@ public class UnityChatController : MonoBehaviour
                         request.downloadHandler.text
                     );
 
-                // Display Clara's response.
+                // Display Clara's response in the chat.
                 CreateMessage(response.response, false);
 
-                // Generate Kokoro speech and play it through Unity.
+                // Apply the facial expression for Clara.
+                if (claraExpressionController != null)
+                {
+                    claraExpressionController.SetEmotion(
+                        response.emotion,
+                        response.intensity
+                    );
+                }
+
+                // Generate speech and play it through Unity.
                 yield return StartCoroutine(
                     PlayClaraSpeech(response.response)
                     );
@@ -298,6 +312,11 @@ public class UnityChatController : MonoBehaviour
                     "Clara TTS failed: " + request.error
                 );
 
+                if (claraExpressionController != null)
+                {
+                    claraExpressionController.NotifySpeechUnavailable();
+                }
+
                 yield break;
             }
 
@@ -310,6 +329,11 @@ public class UnityChatController : MonoBehaviour
             AudioClip previousClip = claraAudioSource.clip;
             claraAudioSource.clip = clip;
             claraAudioSource.Play();
+
+            if (claraExpressionController != null)
+            {
+                claraExpressionController.NotifySpeechStarted();
+            }
 
             if (previousClip != null)
                 Destroy(previousClip);
