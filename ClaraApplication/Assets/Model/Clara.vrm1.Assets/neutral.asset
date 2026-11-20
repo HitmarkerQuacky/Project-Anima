@@ -15,7 +15,7 @@ MonoBehaviour:
   m_prefab: {fileID: -1728013695380148634, guid: 2b4f90045c2a59842ac77dd635b9f31b, type: 3}
   MorphTargetBindings:
   - RelativePath: Face
-    Index: 11
+    Index: 0
     Weight: 1
   - RelativePath: Face
     Index: 11

@@ -314,11 +314,11 @@ Unity Editor; a standalone executable or installer can come later.
 
 ### 5. Character animation and expressions
 
--   [ ] Add an idle animation (subtle movement, breathing, and
+-   [x] Add an idle animation (subtle movement, breathing, and
     blinking).
--   [ ] Implement audio-synchronized mouth movement.
--   [ ] Explore VRM facial expressions.
--   [ ] Connect conversational emotion metadata to avatar expressions.
+-   [x] Implement audio-synchronized mouth movement.
+-   [x] Explore VRM facial expressions.
+-   [x] Connect conversational emotion metadata to avatar expressions.
 -   [ ] Explore more detailed lip-sync using visemes or phoneme timing.
 
 ### 6. Facecam / compact mode
@@ -340,16 +340,16 @@ Unity Editor; a standalone executable or installer can come later.
 
 ### 8. Backend integration and distribution
 
--   [ ] Wrap the existing Python conversation workflow in a local
+-   [x] Wrap the existing Python conversation workflow in a local
     FastAPI service.
--   [ ] Define a stable JSON request/response format between Unity and
+-   [x] Define a stable JSON request/response format between Unity and
     Python.
--   [ ] Return response text and optional emotion/animation metadata.
--   [ ] Make generated audio accessible to Unity for playback and
+-   [x] Return response text and optional emotion/animation metadata.
+-   [x] Make generated audio accessible to Unity for playback and
     lip-sync.
--   [ ] Connect Unity chat input and output to the backend.
+-   [x] Connect Unity chat input and output to the backend.
 -   [ ] Improve startup/shutdown handling for local services.
--   [ ] Document installation and setup.
+-   [x] Document installation and setup.
 -   [ ] Consider standalone Windows packaging.
 
 ------------------------------------------------------------------------

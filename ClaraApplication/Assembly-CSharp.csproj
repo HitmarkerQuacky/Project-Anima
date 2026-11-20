@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\ClaraExpressionController.cs" />
     <Compile Include="Assets\Scripts\ClaraLipSync.cs" />
     <Compile Include="Assets\Scripts\UnityChatController.cs" />
+    <Compile Include="Assets\Scripts\ClaraTalkingController.cs" />
     <Compile Include="Assets\Scripts\UIWindowController.cs" />
     <Compile Include="Assets\Scripts\ChatWindowDrag.cs" />
     <Compile Include="Assets\Scripts\AvatarCameraController.cs" />
